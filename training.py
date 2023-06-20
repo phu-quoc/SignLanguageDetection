@@ -2,7 +2,6 @@ from sklearn.metrics import confusion_matrix
 from hog import HogDescriptor
 from svm import SVM
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import StandardScaler
 import cv2
 import numpy as np
@@ -41,13 +40,17 @@ sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
 
-svm = SVM(num_classes=3, learning_rate=0.001, lambda_param=0.01, num_iterations=1000)
+svm = SVM(num_classes=3, learning_rate=0.001,
+          lambda_param=0.01, num_iterations=1000)
 model = svm.fit(X_train, y_train)
 y_pred = svm.predict(X_test)
 
-accuracy = accuracy_score(y_test, y_pred)
+num_correct = np.count_nonzero((y_pred == y_test))
+num_total = len(y_test)
+accuracy = num_correct / num_total
 print("Accuracy: ", accuracy)
+
 cm = confusion_matrix(y_test, y_pred)
-print("Confusion matrix: ", cm)
+print("Confusion matrix: \n", cm)
 
 pickle.dump(model, open("svm_model.pickle", "wb"))

@@ -81,6 +81,7 @@ while True:
         features = extract_hog_features(img)
         features = np.reshape(features, (1, 8100))
         result = model.predict(features)
+        img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
         __draw_label(
             img, 'SVM: '+result[0], (20, 20), (255, 0, 0))
 

@@ -23,10 +23,13 @@ class SVM:
             
             for _ in range(self.num_iterations):
                 for j in range(num_samples):
+                    # y_binary = 1, Condition >= 1 có nghĩa là nó là thuộc vào loại đó
+                    
                     condition = y_binary[j] * (np.dot(X[j], weights) - bias) >= 1
                     gradient_weights = self.lambda_param * weights - (1 / num_samples) * y_binary[j] * X[j]
                     gradient_bias = - (1 / num_samples) * y_binary[j]
                     
+                    # Cập nhật lại trọng số và bias
                     if condition:
                         weights -= self.learning_rate * gradient_weights
                         bias -= self.learning_rate * gradient_bias
@@ -34,6 +37,7 @@ class SVM:
                         weights -= self.learning_rate * (gradient_weights - self.lambda_param * weights)
                         bias -= self.learning_rate * gradient_bias
             
+            # gán trọng số của và bias
             self.weights[i] = weights
             self.bias[i] = bias
         return self
